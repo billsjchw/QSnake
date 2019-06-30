@@ -88,6 +88,7 @@ private:
     std::stack<State> stk;
 private:
     State pnum;
+    bool wall;
 private:
     Snake knuth, linus;
     int ocpy[M_DOUBLE][N];
@@ -102,6 +103,9 @@ private:
     QButtonGroup * btg_pnum;
     QRadioButton * btn_single;
     QRadioButton * btn_double;
+    QButtonGroup * btg_wall;
+    QRadioButton * btn_wall;
+    QRadioButton * btn_nowall;
 private:
     void resize_fixed(int width, int height) {
         setFixedSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
@@ -135,11 +139,24 @@ private:
                 btn_single->setChecked(true);
             else
                 btn_double->setChecked(true);
-            btn_single->setGeometry(400, 270, 50, 50);
-            btn_double->setGeometry(500, 270, 50, 50);
+            btn_single->setGeometry(400, 285, 50, 20);
+            btn_double->setGeometry(500, 285, 50, 20);
             btg_pnum = new QButtonGroup(this);
             btg_pnum->addButton(btn_single, SINGLE);
             btg_pnum->addButton(btn_double, DOUBLE);
+            btn_wall = new QRadioButton("Disable", this);
+            btn_nowall = new QRadioButton("Enable", this);
+            btn_wall->setFont(FONT_YAHEI);
+            btn_nowall->setFont(FONT_YAHEI);
+            if (wall)
+                btn_wall->setChecked(true);
+            else
+                btn_nowall->setChecked(true);
+            btn_wall->setGeometry(400, 330, 200, 20);
+            btn_nowall->setGeometry(540, 330, 200, 20);
+            btg_wall = new QButtonGroup(this);
+            btg_wall->addButton(btn_wall, true);
+            btg_wall->addButton(btn_nowall, false);
             btn_finish = new QPushButton(QIcon(ICON_FINISH), "", this);
             btn_finish->setGeometry(340, 550, 120, 120);
             btn_finish->setFlat(true);
@@ -158,6 +175,8 @@ private:
             delete btg_pnum;
             delete btn_single;
             delete btn_double;
+            delete btn_wall;
+            delete btn_nowall;
             delete btn_finish;
         }
     }
@@ -176,6 +195,8 @@ private:
         } else if (state == SETTING) {
             btn_single->show();
             btn_double->show();
+            btn_wall->show();
+            btn_nowall->show();
             btn_finish->show();
         }
     }
@@ -248,13 +269,14 @@ private slots:
     }
     void finish_setting() {
         pnum = State(btg_pnum->checkedId());
+        wall = btg_wall->checkedId();
         destory_button(SETTING);
         stk.pop();
         show_button(stk.top());
         update();
     }
 public:
-    QSnake(): pnum(SINGLE), hi(0) {
+    QSnake(): pnum(SINGLE), wall(true), hi(0) {
         setWindowTitle("QSnake");
         resize_fixed(WIDTH_MAIN, HEIGHT_MAIN);
         srand(unsigned(time(nullptr)));
@@ -379,6 +401,7 @@ private:
             pt.drawText(270, 200, "Setting");
             pt.setFont(FONT_YAHEI);
             pt.drawText(260, 303, "Players:");
+            pt.drawText(136, 349, "Go Through Walls:");
         }
     }
     void timerEvent(QTimerEvent * ev) {
@@ -411,6 +434,11 @@ private:
             }
         } else {
             snake->shape.push_back(snake->shape.back() + OFFSET[snake->dir]);
+            if (!wall) {
+                int m = pnum == SINGLE ? M : M_DOUBLE;
+                snake->shape.back().setX((snake->shape.back().x() + m) % m);
+                snake->shape.back().setY((snake->shape.back().y() + N) % N);
+            }
             ocpy[snake->shape.front().x()][snake->shape.front().y()] = 0;
             snake->shape.pop_front();
         }
