@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>start.png</file>
+        <file>game_over.png</file>
+        <file>restart.png</file>
+        <file>setting.png</file>
+        <file>cup_item.png</file>
+        <file>cup_white.png</file>
+    </qresource>
+    <qresource prefix="/font">
+        <file>msyhbd.ttf</file>
+        <file>BRITANIC.TTF</file>
+    </qresource>
+</RCC>
