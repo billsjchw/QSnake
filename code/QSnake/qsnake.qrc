@@ -6,6 +6,7 @@
         <file>setting.png</file>
         <file>cup_item.png</file>
         <file>cup_white.png</file>
+        <file>finish.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>msyhbd.ttf</file>
