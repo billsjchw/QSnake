@@ -18,19 +18,24 @@
 #include <QColor>
 #include <QPen>
 #include <QSize>
+#include <QFile>
+#include <QDataStream>
+#include <QComboBox>
 #include <deque>
 #include <stack>
 #include <queue>
+#include <vector>
 #include <cstring>
 #include <cstdlib>
 #include <ctime>
+#include <string>
 #include <iostream>
 
 class QSnake: public QWidget {
 Q_OBJECT
 private:
     enum State {WELCOME, SINGLE, DOUBLE, GAMEOVER_SINGLE, GAMEOVER_DOUBLE, SETTING, PAUSE};
-    enum Direction {LEFT, UP, DOWN, RIGHT};
+    enum Direction {LEFT, UP, DOWN, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT, ORIGIN};
     struct Snake {
         static const int INIT_LEN = 3;
         static const int INIT_INTV = 200;
@@ -39,6 +44,10 @@ private:
         Direction dir;
         std::deque<QPoint> shape;
         Snake() {}
+        Snake(QPoint head, Direction dir): len(INIT_LEN), interval(INIT_INTV), dir(dir) {
+            for (int i = INIT_LEN - 1; i >= 0; --i)
+                shape.push_back(head + OFFSET[3 - dir] * i);
+        }
         Snake(int m, int n): len(INIT_LEN), interval(INIT_INTV) {
             QPoint head(m / 2, n / 2);
             dir = Direction(rand() % 4);
@@ -54,16 +63,21 @@ private:
         }
     };
     enum Name {KNUTH, LINUS};
+    enum BlockType {NOBLOCK, BLOCK, RBLOCK};
 private:
     static const int WIDTH_MAIN = 800;
     static const int WIDTH_MAIN_DOUBLE = 1200;
     static const int HEIGHT_MAIN = 900;
     static const int HEIGHT_PG = 800;
     static const int ITEM_SIZE = 40;
+    static const int MAP_NUM_SINGLE = 2;
+    static const int MAP_NUM_DOUBLE = 2;
     static const int M = WIDTH_MAIN / ITEM_SIZE;
     static const int M_DOUBLE = WIDTH_MAIN_DOUBLE / ITEM_SIZE;
     static const int N = HEIGHT_PG / ITEM_SIZE;
-    static const QPoint OFFSET[4];
+    static const int RBLOCK_INTV = 8000;
+    static const int INIT_RBCNT;
+    static const QPoint OFFSET[9];
     static const int POLY_SNAKE_N = 8;
     static const QPointF POLY_SNAKE[POLY_SNAKE_N];
     static const int POLY_FOOD_N = 3;
@@ -76,6 +90,7 @@ private:
     static const QString ICON_START;
     static const QImage ICON_CUP_WHITE;
     static const QImage ICON_CUP_ITEM;
+    static const QImage ICON_BLOCK;
     static const QString ICON_RESTART;
     static const QString ICON_SETTING;
     static const QString ICON_FINISH;
@@ -88,13 +103,15 @@ private:
     std::stack<State> stk;
 private:
     State pnum;
-    bool wall;
+    bool wall, landform, rblock;
 private:
     Snake knuth, linus;
     int ocpy[M_DOUBLE][N];
+    BlockType block[M_DOUBLE][N];
+    int bcnt, rbcnt;
     std::queue<Direction> q[2];
     QPoint food;
-    int tid[2], hi;
+    int tid[2], hi, tid_rblock;
 private:
     QPushButton * btn_start;
     QPushButton * btn_restart;
@@ -106,11 +123,36 @@ private:
     QButtonGroup * btg_wall;
     QRadioButton * btn_wall;
     QRadioButton * btn_nowall;
+    QButtonGroup * btg_block;
+    QRadioButton * btn_block;
+    QRadioButton * btn_noblock;
+    QButtonGroup * btg_rblock;
+    QRadioButton * btn_rblock;
+    QRadioButton * btn_norblock;
+    QComboBox * cbb_rbcnt;
 private:
     void resize_fixed(int width, int height) {
         setFixedSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
         resize(width, height);
         setFixedSize(size());
+    }
+    void create_rbutton(QRadioButton * & pb1, QRadioButton * & pb2, QButtonGroup * & pbg,
+                        int x1, int x2, int y, bool flag,
+                        const QString & txt1, const QString & txt2,
+                        int id1, int id2) {
+        pb1 = new QRadioButton(txt1, this);
+        pb2 = new QRadioButton(txt2, this);
+        pb1->setFont(FONT_YAHEI);
+        pb2->setFont(FONT_YAHEI);
+        if (flag)
+            pb1->setChecked(true);
+        else
+            pb2->setChecked(true);
+        pb1->setGeometry(x1, y, 200, 20);
+        pb2->setGeometry(x2, y, 200, 20);
+        pbg = new QButtonGroup(this);
+        pbg->addButton(pb1, id1);
+        pbg->addButton(pb2, id2);
     }
     void create_button(State state) {
         if (state == WELCOME) {
@@ -131,36 +173,35 @@ private:
             connect(btn_restart, SIGNAL(clicked()), SLOT(restart()));
             connect(btn_setting, SIGNAL(clicked()), SLOT(setting()));
         } else if (state == SETTING) {
-            btn_single = new QRadioButton("1", this);
-            btn_double = new QRadioButton("2", this);
-            btn_single->setFont(FONT_YAHEI);
-            btn_double->setFont(FONT_YAHEI);
-            if (pnum == SINGLE)
-                btn_single->setChecked(true);
-            else
-                btn_double->setChecked(true);
-            btn_single->setGeometry(400, 285, 50, 20);
-            btn_double->setGeometry(500, 285, 50, 20);
-            btg_pnum = new QButtonGroup(this);
-            btg_pnum->addButton(btn_single, SINGLE);
-            btg_pnum->addButton(btn_double, DOUBLE);
-            btn_wall = new QRadioButton("Disable", this);
-            btn_nowall = new QRadioButton("Enable", this);
-            btn_wall->setFont(FONT_YAHEI);
-            btn_nowall->setFont(FONT_YAHEI);
-            if (wall)
-                btn_wall->setChecked(true);
-            else
-                btn_nowall->setChecked(true);
-            btn_wall->setGeometry(400, 330, 200, 20);
-            btn_nowall->setGeometry(540, 330, 200, 20);
-            btg_wall = new QButtonGroup(this);
-            btg_wall->addButton(btn_wall, true);
-            btg_wall->addButton(btn_nowall, false);
+            create_rbutton(btn_single, btn_double, btg_pnum,
+                           400, 500, 285, pnum == SINGLE, "1", "2", SINGLE, DOUBLE);
+            create_rbutton(btn_wall, btn_nowall, btg_wall,
+                           400, 540, 330, wall, "Disable", "Enable", true, false);
+            create_rbutton(btn_noblock, btn_block, btg_block,
+                           400, 540, 375, !landform, "Disable", "Enable", false, true);
+            create_rbutton(btn_norblock, btn_rblock, btg_rblock,
+                           400, 540, 420, !rblock, "Disable", "Enable", false, true);
+            cbb_rbcnt = new QComboBox(this);
+            if (!rblock)
+                cbb_rbcnt->setEnabled(false);
+            cbb_rbcnt->addItem("1");
+            cbb_rbcnt->addItem("2");
+            cbb_rbcnt->addItem("3");
+            if (pnum == DOUBLE) {
+                cbb_rbcnt->addItem("4");
+                cbb_rbcnt->addItem("5");
+            }
+            cbb_rbcnt->setFont(FONT_YAHEI);
+            cbb_rbcnt->setCurrentIndex(rbcnt - 1);
+            cbb_rbcnt->setGeometry(400, 460, 200, 40);
             btn_finish = new QPushButton(QIcon(ICON_FINISH), "", this);
             btn_finish->setGeometry(340, 550, 120, 120);
             btn_finish->setFlat(true);
             btn_finish->setIconSize(QSize(120, 120));
+            connect(btn_single, SIGNAL(clicked()), SLOT(single_player()));
+            connect(btn_double, SIGNAL(clicked()), SLOT(double_player()));
+            connect(btn_norblock, SIGNAL(clicked()), SLOT(set_norblock()));
+            connect(btn_rblock, SIGNAL(clicked()), SLOT(set_rblock()));
             connect(btn_finish, SIGNAL(clicked()), SLOT(finish_setting()));
         }
         show_button(state);
@@ -177,6 +218,11 @@ private:
             delete btn_double;
             delete btn_wall;
             delete btn_nowall;
+            delete btn_block;
+            delete btn_noblock;
+            delete btn_rblock;
+            delete btn_norblock;
+            delete cbb_rbcnt;
             delete btn_finish;
         }
     }
@@ -197,31 +243,96 @@ private:
             btn_double->show();
             btn_wall->show();
             btn_nowall->show();
+            btn_block->show();
+            btn_noblock->show();
+            btn_rblock->show();
+            btn_norblock->show();
+            cbb_rbcnt->show();
             btn_finish->show();
         }
     }
     bool valid(QPoint pos) {
         int m = pnum == SINGLE ? M : M_DOUBLE;
         return pos.x() >= 0 && pos.x() < m && pos.y() >= 0 && pos.y() < N
-                && !ocpy[pos.x()][pos.y()];
+                && !ocpy[pos.x()][pos.y()] && !block[pos.x()][pos.y()];
+    }
+    bool valid_around(QPoint pos) {
+        for (int i = 0; i < 9; ++i) {
+            QPoint npos = pos + OFFSET[i];
+            if (ocpy[npos.x()][npos.y()] || block[npos.x()][npos.y()])
+                return false;
+        }
+        return true;
     }
     QPoint rnd_food() {
-        QPoint ret(0, 0);
+        QPoint ret(0, -1);
         int k;
         if (pnum == SINGLE)
-            k = rand() % (M * N - knuth.len - 1);
+            k = rand() % (M * N - knuth.len - bcnt - rbcnt) + 1;
         else
-            k = rand() % (M_DOUBLE * N - knuth.len - linus.len - 1);
+            k = rand() % (M_DOUBLE * N - knuth.len - linus.len - bcnt - rbcnt) + 1;
         for (int i = 0; i < k; ++i)
             do {
                 ret += QPoint(0, 1);
                 if (ret.y() >= N)
                     ret = QPoint(ret.x() + 1, 0);
-            } while (ocpy[ret.x()][ret.y()]);
+            } while (!valid(ret));
         return ret;
     }
+    void rnd_block() {
+        int m = pnum == SINGLE ? M : M_DOUBLE;
+        for (int i = 0; i < m; ++i)
+            for (int j = 0; j < N; ++j)
+                if (block[i][j] == RBLOCK)
+                    block[i][j] = NOBLOCK;
+        for (int t = 0; t < rbcnt; ++t) {
+            std::vector<QPoint> space;
+            for (int i = 0; i < m; ++i)
+                for (int j = 0; j < N; ++j)
+                    if (valid_around(QPoint(i, j)))
+                        space.push_back(QPoint(i, j));
+            QPoint pos = space[rand() % space.size()];
+            block[pos.x()][pos.y()] = RBLOCK;
+        }
+    }
     void init_game() {
-        if (pnum == SINGLE)
+        memset(block, 0, sizeof(block));
+        if (landform) {
+            QFile file;
+            QDataStream in(&file);
+            int x, y, dir;
+            if (pnum == SINGLE) {
+                QString no = QString("%1")
+                        .arg(rand() % MAP_NUM_SINGLE, 2, 10, QChar('0'));
+                file.setFileName(QString(":/map/single") + no + QString(".map"));
+                file.open(QIODevice::ReadOnly);
+                in.readRawData((char *) &x, sizeof(x));
+                in.readRawData((char *) &y, sizeof(y));
+                in.readRawData((char *) &dir, sizeof(dir));
+                knuth = Snake(QPoint(x, y), Direction(dir));
+            } else {
+                QString no = QString("%1")
+                        .arg(rand() % MAP_NUM_DOUBLE, 2, 10, QChar('0'));
+                file.setFileName(QString(":/map/double") + no + QString(".map"));
+                file.open(QIODevice::ReadOnly);
+                in.readRawData((char *) &x, sizeof(x));
+                in.readRawData((char *) &y, sizeof(y));
+                in.readRawData((char *) &dir, sizeof(dir));
+                knuth = Snake(QPoint(x, y), Direction(dir));
+                in.readRawData((char *) &x, sizeof(x));
+                in.readRawData((char *) &y, sizeof(y));
+                in.readRawData((char *) &dir, sizeof(dir));
+                linus = Snake(QPoint(x, y), Direction(dir));
+            }
+            bcnt = 0;
+            while (in.status() != QDataStream::ReadPastEnd) {
+                in.readRawData((char *) &x, sizeof(x));
+                in.readRawData((char *) &y, sizeof(y));
+                block[x][y] = BLOCK;
+                ++bcnt;
+            }
+            file.close();
+        } else if (pnum == SINGLE)
             knuth = Snake(M, N);
         else {
             knuth = Snake(M_DOUBLE, N, 1);
@@ -238,6 +349,8 @@ private:
             while (!q[LINUS].empty())
                 q[LINUS].pop();
         }
+        if (rblock)
+            rnd_block();
         food = rnd_food();
         if (pnum == DOUBLE)
             resize_fixed(WIDTH_MAIN_DOUBLE, HEIGHT_MAIN);
@@ -245,6 +358,8 @@ private:
         tid[KNUTH] = startTimer(knuth.interval);
         if (pnum == DOUBLE)
             tid[LINUS] = startTimer(linus.interval);
+        if (rblock)
+            tid_rblock = startTimer(RBLOCK_INTV);
     }
 private slots:
     void start() {
@@ -270,13 +385,36 @@ private slots:
     void finish_setting() {
         pnum = State(btg_pnum->checkedId());
         wall = btg_wall->checkedId();
+        landform = btg_block->checkedId();
+        rblock = btg_rblock->checkedId();
+        rbcnt = cbb_rbcnt->currentIndex() + 1;
         destory_button(SETTING);
         stk.pop();
         show_button(stk.top());
         update();
     }
+    void single_player() {
+        if (cbb_rbcnt->count() == 5) {
+            cbb_rbcnt->setCurrentIndex(2);
+            cbb_rbcnt->removeItem(3);
+            cbb_rbcnt->removeItem(3);
+        }
+    }
+    void double_player() {
+        if (cbb_rbcnt->count() == 3) {
+            cbb_rbcnt->addItem("4");
+            cbb_rbcnt->addItem("5");
+        }
+    }
+    void set_norblock() {
+        cbb_rbcnt->setEnabled(false);
+    }
+    void set_rblock() {
+        cbb_rbcnt->setEnabled(true);
+    }
 public:
-    QSnake(): pnum(SINGLE), wall(true), hi(0) {
+    QSnake():
+        pnum(SINGLE), wall(true), landform(false), rblock(false), rbcnt(3), hi(0) {
         setWindowTitle("QSnake");
         resize_fixed(WIDTH_MAIN, HEIGHT_MAIN);
         srand(unsigned(time(nullptr)));
@@ -325,6 +463,12 @@ private:
                 pt.drawConvexPolygon(POLY_SNAKE, POLY_SNAKE_N);
                 pt.restore();
             }
+            for (int i = 0; i < M; ++i)
+                for (int j = 0; j < N; ++j)
+                    if (block[i][j] == BLOCK)
+                        pt.drawRect(i, j, 1, 1);
+                    else if (block[i][j] == RBLOCK)
+                        pt.drawImage(QRect(i, j, 1, 1), ICON_BLOCK);
             pt.translate(food);
             pt.drawConvexPolygon(POLY_FOOD, POLY_FOOD_N);
         } else if (stk.top() == GAMEOVER_SINGLE) {
@@ -392,6 +536,12 @@ private:
                 pt.restore();
             }
             pt.setBrush(COLOUR_ITEM);
+            for (int i = 0; i < M_DOUBLE; ++i)
+                for (int j = 0; j < N; ++j)
+                    if (block[i][j] == BLOCK)
+                        pt.drawRect(i, j, 1, 1);
+                    else if (block[i][j] == RBLOCK)
+                        pt.drawImage(QRect(i, j, 1, 1), ICON_BLOCK);
             pt.translate(food);
             pt.drawConvexPolygon(POLY_FOOD, POLY_FOOD_N);
         } else if (stk.top() == SETTING) {
@@ -401,12 +551,19 @@ private:
             pt.drawText(270, 200, "Setting");
             pt.setFont(FONT_YAHEI);
             pt.drawText(260, 303, "Players:");
-            pt.drawText(136, 349, "Go Through Walls:");
+            pt.drawText(136, 348, "Go Through Walls:");
+            pt.drawText(162, 393, "Initial Landform:");
+            pt.drawText(166, 437, "Random Blocks:");
+            pt.drawText(64, 490, "Random Blocks Number:");
         }
     }
     void timerEvent(QTimerEvent * ev) {
         if (stk.top() != SINGLE && stk.top() != DOUBLE)
             return;
+        if (rblock && ev->timerId() == tid_rblock) {
+            rnd_block();
+            return;
+        }
         Snake * snake;
         Name name;
         if (ev->timerId() == tid[KNUTH]) {
@@ -446,6 +603,8 @@ private:
             killTimer(tid[KNUTH]);
             if (pnum == DOUBLE)
                 killTimer(tid[LINUS]);
+            if (rblock)
+                killTimer(tid_rblock);
             stk.pop();
             destory_button(pnum);
             stk.push(pnum == SINGLE ? GAMEOVER_SINGLE : GAMEOVER_DOUBLE);

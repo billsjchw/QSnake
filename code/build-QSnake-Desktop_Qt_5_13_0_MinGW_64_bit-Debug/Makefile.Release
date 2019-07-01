@@ -101,12 +101,19 @@ compiler_rcc_clean:
 	-$(DEL_FILE) release\qrc_qsnake.cpp
 release/qrc_qsnake.cpp: ../QSnake/qsnake.qrc \
 		C:/Qt/5.13.0/mingw73_64/bin/rcc.exe \
+		../QSnake/block.png \
 		../QSnake/cup_item.png \
 		../QSnake/restart.png \
 		../QSnake/game_over.png \
 		../QSnake/cup_white.png \
 		../QSnake/start.png \
 		../QSnake/setting.png \
+		../QSnake/finish.png \
+		../QSnake/double00.map \
+		../QSnake/single00.map \
+		../QSnake/double01.map \
+		../QSnake/single01.map \
+		../QSnake/BRITANIC.TTF \
 		../QSnake/msyhbd.ttf
 	C:\Qt\5.13.0\mingw73_64\bin\rcc.exe -name qsnake ..\QSnake\qsnake.qrc -o release\qrc_qsnake.cpp
 
@@ -143,10 +150,17 @@ release/moc_qsnake.cpp: ../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qmutex.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qnumeric.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qversiontagging.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtCore/QObject \
-		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobject.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QWidget \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qwidget.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qtguiglobal.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qtgui-config.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qwindowdefs.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobjectdefs.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobject.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qstring.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qchar.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qbytearray.h \
@@ -173,14 +187,6 @@ release/moc_qsnake.cpp: ../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qvarlengtharray.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qcontainerfwd.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobject_impl.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QWidget \
-		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qwidget.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtwidgetsglobal.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/qtguiglobal.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/qtgui-config.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtwidgets-config.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/qwindowdefs.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/qwindowdefs_win.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qmargins.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/qpaintdevice.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qrect.h \
@@ -234,6 +240,10 @@ release/moc_qsnake.cpp: ../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractbutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/qicon.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QButtonGroup \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QRadioButton \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qradiobutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QIcon \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QFont \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QString \
@@ -243,9 +253,27 @@ release/moc_qsnake.cpp: ../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QRect \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QColor \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QPen \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QSize \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QFile \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QDataStream \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QComboBox \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qcombobox.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qvalidator.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/qregularexpression.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qslider.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qstyle.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtabbar.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qrubberband.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qframe.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/qabstractitemmodel.h \
 		release/moc_predefs.h \
 		C:/Qt/5.13.0/mingw73_64/bin/moc.exe
-	C:\Qt\5.13.0\mingw73_64\bin\moc.exe $(DEFINES) --include C:/Users/dell/Desktop/QSnake/code/build-QSnake-Desktop_Qt_5_13_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/5.13.0/mingw73_64/mkspecs/win32-g++ -IC:/Users/dell/Desktop/QSnake/code/QSnake -IC:/Qt/5.13.0/mingw73_64/include -IC:/Qt/5.13.0/mingw73_64/include/QtWidgets -IC:/Qt/5.13.0/mingw73_64/include/QtGui -IC:/Qt/5.13.0/mingw73_64/include/QtANGLE -IC:/Qt/5.13.0/mingw73_64/include/QtCore -I. -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -IC:/Qt/Tools/mingw730_64/x86_64-w64-mingw32/include ..\QSnake\qsnake.h -o release\moc_qsnake.cpp
+	C:\Qt\5.13.0\mingw73_64\bin\moc.exe $(DEFINES) --include C:/Users/dell/Documents/GitHub/QSnake/QSnake/code/build-QSnake-Desktop_Qt_5_13_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/5.13.0/mingw73_64/mkspecs/win32-g++ -IC:/Users/dell/Documents/GitHub/QSnake/QSnake/code/QSnake -IC:/Qt/5.13.0/mingw73_64/include -IC:/Qt/5.13.0/mingw73_64/include/QtWidgets -IC:/Qt/5.13.0/mingw73_64/include/QtGui -IC:/Qt/5.13.0/mingw73_64/include/QtANGLE -IC:/Qt/5.13.0/mingw73_64/include/QtCore -I. -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -IC:/Qt/Tools/mingw730_64/x86_64-w64-mingw32/include ..\QSnake\qsnake.h -o release\moc_qsnake.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -379,7 +407,6 @@ release/main.o: ../QSnake/main.cpp C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QAp
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QString \
 		../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/Qt \
-		C:/Qt/5.13.0/mingw73_64/include/QtCore/QObject \
 		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QWidget \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QPainter \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/qpainter.h \
@@ -390,6 +417,10 @@ release/main.o: ../QSnake/main.cpp C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QAp
 		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractbutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/qicon.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QButtonGroup \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QRadioButton \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qradiobutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QIcon \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QFont \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QChar \
@@ -397,7 +428,25 @@ release/main.o: ../QSnake/main.cpp C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QAp
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QPoint \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QRect \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QColor \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/QPen
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/QPen \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QSize \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QFile \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QDataStream \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QComboBox \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qcombobox.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qvalidator.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/qregularexpression.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qslider.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qstyle.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtabbar.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qrubberband.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qframe.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/qabstractitemmodel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\QSnake\main.cpp
 
 release/qsnake.o: ../QSnake/qsnake.cpp ../QSnake/qsnake.h \
@@ -424,10 +473,17 @@ release/qsnake.o: ../QSnake/qsnake.cpp ../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qmutex.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qnumeric.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qversiontagging.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtCore/QObject \
-		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobject.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QWidget \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qwidget.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qtguiglobal.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qtgui-config.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qwindowdefs.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobjectdefs.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobject.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qstring.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qchar.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qbytearray.h \
@@ -454,14 +510,6 @@ release/qsnake.o: ../QSnake/qsnake.cpp ../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qvarlengtharray.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qcontainerfwd.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qobject_impl.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QWidget \
-		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qwidget.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtwidgetsglobal.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/qtguiglobal.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/qtgui-config.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtwidgets-config.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/qwindowdefs.h \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/qwindowdefs_win.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qmargins.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/qpaintdevice.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/qrect.h \
@@ -515,6 +563,10 @@ release/qsnake.o: ../QSnake/qsnake.cpp ../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractbutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/qicon.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QButtonGroup \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QRadioButton \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qradiobutton.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QIcon \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QFont \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QString \
@@ -523,7 +575,25 @@ release/qsnake.o: ../QSnake/qsnake.cpp ../QSnake/qsnake.h \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QPoint \
 		C:/Qt/5.13.0/mingw73_64/include/QtCore/QRect \
 		C:/Qt/5.13.0/mingw73_64/include/QtGui/QColor \
-		C:/Qt/5.13.0/mingw73_64/include/QtGui/QPen
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/QPen \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QSize \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QFile \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/QDataStream \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/QComboBox \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qcombobox.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtGui/qvalidator.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/qregularexpression.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qslider.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qstyle.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtabbar.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qrubberband.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtWidgets/qframe.h \
+		C:/Qt/5.13.0/mingw73_64/include/QtCore/qabstractitemmodel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\qsnake.o ..\QSnake\qsnake.cpp
 
 release/qrc_qsnake.o: release/qrc_qsnake.cpp 

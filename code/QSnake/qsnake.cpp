@@ -1,10 +1,9 @@
 #include "qsnake.h"
 
-const QPoint QSnake::OFFSET[4] = {
-    QPoint(-1, 0),
-    QPoint(0, -1),
-    QPoint(0, 1),
-    QPoint(1, 0)
+const QPoint QSnake::OFFSET[9] = {
+    QPoint(-1, 0), QPoint(0, -1), QPoint(0, 1), QPoint(1, 0),
+    QPoint(-1, -1), QPoint(1, -1), QPoint(-1, 1), QPoint(1, 1),
+    QPoint(0, 0)
 };
 const QPointF QSnake::POLY_SNAKE[QSnake::POLY_SNAKE_N] = {
     QPointF(0.3, 0.1), QPointF(0.7, 0.1),
@@ -25,6 +24,7 @@ const QColor QSnake::COLOUR_BLUE(0, 69, 155);
 const QString QSnake::ICON_START(":/img/start.png");
 const QImage QSnake::ICON_CUP_WHITE(":/img/cup_white.png");
 const QImage QSnake::ICON_CUP_ITEM(":/img/cup_item.png");
+const QImage QSnake::ICON_BLOCK(":/img/block.png");
 const QString QSnake::ICON_RESTART(":/img/restart.png");
 const QString QSnake::ICON_SETTING(":/img/setting.png");
 const QString QSnake::ICON_FINISH(":/img/finish.png");
