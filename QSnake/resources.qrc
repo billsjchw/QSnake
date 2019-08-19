@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>background_single.png</file>
+        <file>apple.png</file>
+        <file>snake.png</file>
+        <file>start.png</file>
+        <file>background_plain.png</file>
+        <file>restart.png</file>
+        <file>setting.png</file>
+        <file>brick.png</file>
+        <file>block.png</file>
+        <file>star.png</file>
+        <file>background_double.png</file>
+        <file>snake_blue.png</file>
+        <file>snake_red.png</file>
+        <file>game_over.png</file>
+        <file>q_snake.png</file>
+    </qresource>
+    <qresource prefix="/map">
+        <file>00.single.map</file>
+        <file>00.double.map</file>
+    </qresource>
+</RCC>
