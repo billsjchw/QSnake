@@ -7,7 +7,6 @@
 #include <QMessageBox>
 #include "game_over_window_single.h"
 #include "configuration.h"
-#include <QDebug>
 
 GameWindowSingle::GameWindowSingle() {
     ui = new Ui::GameWindowSingle;

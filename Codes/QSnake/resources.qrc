@@ -20,4 +20,7 @@
         <file>00.single.map</file>
         <file>00.double.map</file>
     </qresource>
+    <qresource prefix="/font">
+        <file>consola.ttf</file>
+    </qresource>
 </RCC>

@@ -13,7 +13,7 @@ protected:
     static const int STAR_ON_INTERVAL = 15000;
     static const int STAR_OFF_INTERVAL = 8000;
     static const int APPLE_SCORE = 1;
-    static const int STAR_SCORE = 10;
+    static const int STAR_SCORE = 5;
     static const int NOT_ACTIVE = -1;
 private:
     int m, n;

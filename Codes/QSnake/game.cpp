@@ -1,8 +1,6 @@
 #include "game.h"
 #include "configuration.h"
 #include <QDateTime>
-#include <QDebug>
-
 Game::Game(QObject * parent, int m, int n):
     m(m), n(n), isBrick(m), isBlock(m), starOn(false), isSnake(m),
     brickNum(0), pauseFlag(false) {
@@ -13,10 +11,7 @@ Game::Game(QObject * parent, int m, int n):
         yaxis.resize(n);
     for (QVector<bool> & yaxis: isBlock)
         yaxis.resize(n);
-    unsigned seed = QDateTime::currentDateTime().toTime_t();
-    // plain: 1564669952 go_through_walls: 1565808065 bricks: 1565807035
-    qDebug() << seed;
-    qsrand(1566136664);
+    qsrand(QDateTime::currentDateTime().toTime_t());
     blockTimer = new QTimer(this);
     blockTimer->setSingleShot(true);
     connect(blockTimer, SIGNAL(timeout()), this, SLOT(resetBlocks()));

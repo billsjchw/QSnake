@@ -5,7 +5,6 @@
 #include <QChar>
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
 
 const char * GameDouble::MAP_FILENAME = ":/map/%1.double.map";
 
@@ -80,6 +79,7 @@ void GameDouble::updateSnake(Snake * snake) {
         starOn = false;
         snake->updateScore(STAR_SCORE);
         snake->startSpeedUp();
+        snake->updateInterval();
         emit update();
     } else if (!inside(p) || isBrick[p.x()][p.y()] || isBlock[p.x()][p.y()])
         handleGameOver();
@@ -148,7 +148,6 @@ void GameDouble::turnSnake(Snake * snake, QPoint dir) {
 }
 
 void GameDouble::handleGameOver() {
-    qDebug() << red->score << " " << blue->score;
     for (Snake * snake: {red, blue}) {
         snake->timer->stop();
         snake->speedUpTimer->stop();

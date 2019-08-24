@@ -8,7 +8,6 @@
 #include <QChar>
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
 
 const char * GameSingle::MAP_FILENAME = ":/map/%1.single.map";
 
@@ -69,6 +68,7 @@ void GameSingle::updateSnake() {
         starOn = false;
         snake->updateScore(STAR_SCORE);
         snake->startSpeedUp();
+        snake->updateInterval();
         emit update();
     } else if (!inside(p) || isBrick[p.x()][p.y()] || isBlock[p.x()][p.y()])
         handleGameOver();
@@ -79,7 +79,6 @@ void GameSingle::updateSnake() {
 }
 
 void GameSingle::handleGameOver() {
-    qDebug() << snake->score;
     snake->timer->stop();
     snake->speedUpTimer->stop();
     Game::handleGameOver();
