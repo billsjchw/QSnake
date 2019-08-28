@@ -12,7 +12,7 @@ public:
     static const int N = 20;
 private:
     static const int INIT_SNAKE_LEN = 3;
-    static const int MAP_NUM = 1;
+    static const int MAP_NUM = 2;
     static const char * MAP_FILENAME;
 public:
     Snake * red, * blue;

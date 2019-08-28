@@ -5,13 +5,14 @@
 #include <QChar>
 #include <QFile>
 #include <QTextStream>
+#include "direction.h"
 
 const char * GameDouble::MAP_FILENAME = ":/map/%1.double.map";
 
 GameDouble::GameDouble(QObject * parent): Game(parent, M, N) {
     if (conf.bricks == Configuration::DISABLE) {
-        red = new Snake(this, INIT_SNAKE_LEN, QPoint(M / 3, N / 2), Snake::RIGHT, M, N);
-        blue = new Snake(this, INIT_SNAKE_LEN, QPoint(2 * M / 3, N / 2), Snake::LEFT, M, N);
+        red = new Snake(this, INIT_SNAKE_LEN, QPoint(M / 3, N / 2), RIGHT, M, N);
+        blue = new Snake(this, INIT_SNAKE_LEN, QPoint(2 * M / 3, N / 2), LEFT, M, N);
     } else
         loadMap();
     connect(red->timer, SIGNAL(timeout()), this, SLOT(updateSnakeRed()));
@@ -115,10 +116,10 @@ void GameDouble::loadMap() {
         QPoint head(headX, headY);
         QPoint dir;
         switch (wasd) {
-        case 'w': dir = Snake::UP; break;
-        case 'a': dir = Snake::LEFT; break;
-        case 's': dir = Snake::DOWN; break;
-        case 'd': dir = Snake::RIGHT; break;
+        case 'w': dir = UP; break;
+        case 'a': dir = LEFT; break;
+        case 's': dir = DOWN; break;
+        case 'd': dir = RIGHT; break;
         }
         *snake = new Snake(this, len, head, dir, M, N);
     }

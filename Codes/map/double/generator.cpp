@@ -6,7 +6,7 @@ using namespace std;
 
 typedef pair<int, int> Point;
 
-const string name = "00";
+const string name = "01";
 const int M = 30;
 const int N = 20;
 

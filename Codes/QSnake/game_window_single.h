@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include "game_single.h"
 #include "pause_window.h"
+#include <QColor>
 #include "ui_game_window_single.h"
 
 class GameWindowSingle: public GameWindow {
@@ -13,6 +14,7 @@ private:
     static const int WIDTH = 800;
     static const int HEIGHT = 800;
     static const int TITLE_HEIGHT = 100;
+    static const QColor COLOR_BROWN;
 private:
     Ui::GameWindowSingle * ui;
     GameSingle * gameSingle;

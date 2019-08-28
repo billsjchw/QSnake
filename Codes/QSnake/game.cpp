@@ -1,6 +1,8 @@
 #include "game.h"
 #include "configuration.h"
 #include <QDateTime>
+#include <QPixmap>
+
 Game::Game(QObject * parent, int m, int n):
     m(m), n(n), isBrick(m), isBlock(m), starOn(false), isSnake(m),
     brickNum(0), pauseFlag(false) {

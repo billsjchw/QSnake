@@ -4,6 +4,10 @@
 #include <QString>
 #include <QChar>
 #include "game_over_window_double.h"
+#include "direction.h"
+
+const QColor GameWindowDouble::COLOR_RED(211, 11, 55);
+const QColor GameWindowDouble::COLOR_BLUE(0, 69, 155);
 
 GameWindowDouble::GameWindowDouble() {
     ui = new Ui::GameWindowDouble;
@@ -35,10 +39,8 @@ void GameWindowDouble::paintEvent(QPaintEvent *) {
             if (gameDouble->isBlock[i][j])
                 painter.drawPixmap(i, j, 1, 1, IMG_BLOCK);
         }
-    for (QPoint p: gameDouble->red->body)
-        painter.drawPixmap(p.x(), p.y(), 1, 1, IMG_SNAKE_RED);
-    for (QPoint p: gameDouble->blue->body)
-        painter.drawPixmap(p.x(), p.y(), 1, 1, IMG_SNAKE_BLUE);
+    drawSnake(painter, gameDouble->red, COLOR_RED);
+    drawSnake(painter, gameDouble->blue, COLOR_BLUE);
     painter.drawPixmap(gameDouble->apple.x(), gameDouble->apple.y(), 1, 1, IMG_APPLE);
     if (gameDouble->starOn)
         painter.drawPixmap(gameDouble->star.x(), gameDouble->star.y(), 1, 1, IMG_STAR);
@@ -46,14 +48,14 @@ void GameWindowDouble::paintEvent(QPaintEvent *) {
 
 void GameWindowDouble::keyPressEvent(QKeyEvent * event) {
     switch (event->key()) {
-    case Qt::Key_W: gameDouble->turnSnakeRed(Snake::UP); break;
-    case Qt::Key_S: gameDouble->turnSnakeRed(Snake::DOWN); break;
-    case Qt::Key_A: gameDouble->turnSnakeRed(Snake::LEFT); break;
-    case Qt::Key_D: gameDouble->turnSnakeRed(Snake::RIGHT); break;
-    case Qt::Key_Up: gameDouble->turnSnakeBlue(Snake::UP); break;
-    case Qt::Key_Down: gameDouble->turnSnakeBlue(Snake::DOWN); break;
-    case Qt::Key_Left: gameDouble->turnSnakeBlue(Snake::LEFT); break;
-    case Qt::Key_Right: gameDouble->turnSnakeBlue(Snake::RIGHT); break;
+    case Qt::Key_W: gameDouble->turnSnakeRed(UP); break;
+    case Qt::Key_S: gameDouble->turnSnakeRed(DOWN); break;
+    case Qt::Key_A: gameDouble->turnSnakeRed(LEFT); break;
+    case Qt::Key_D: gameDouble->turnSnakeRed(RIGHT); break;
+    case Qt::Key_Up: gameDouble->turnSnakeBlue(UP); break;
+    case Qt::Key_Down: gameDouble->turnSnakeBlue(DOWN); break;
+    case Qt::Key_Left: gameDouble->turnSnakeBlue(LEFT); break;
+    case Qt::Key_Right: gameDouble->turnSnakeBlue(RIGHT); break;
     case Qt::Key_P: pause(); break;
     }
 }

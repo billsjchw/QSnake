@@ -10,7 +10,6 @@
 class Snake: public QObject {
     Q_OBJECT
 public:
-    static const QPoint LEFT, RIGHT, UP, DOWN;
     static const int MAX_INTERVAL = 200;
     static const int MIN_INTERVAL = 100;
     static const int INTERVAL_OFFSET = 5;

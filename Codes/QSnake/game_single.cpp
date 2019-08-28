@@ -8,12 +8,13 @@
 #include <QChar>
 #include <QFile>
 #include <QTextStream>
+#include "direction.h"
 
 const char * GameSingle::MAP_FILENAME = ":/map/%1.single.map";
 
 GameSingle::GameSingle(QObject * parent): Game(parent, M, N), automaticFlag(false) {
     if (conf.bricks == Configuration::DISABLE)
-        snake = new Snake(this, INIT_SNAKE_LEN, QPoint(M / 2, N / 2), Snake::RIGHT, M, N);
+        snake = new Snake(this, INIT_SNAKE_LEN, QPoint(M / 2, N / 2), RIGHT, M, N);
     else
         loadMap();
     connect(snake->timer, SIGNAL(timeout()), this, SLOT(updateSnake()));
@@ -106,14 +107,14 @@ void GameSingle::makeStrategy() {
 
 QPoint GameSingle::randomDirection() {
     QVector<QPoint> validDirection;
-    for (QPoint dir: {Snake::LEFT, Snake::RIGHT, Snake::UP, Snake::DOWN})
+    for (QPoint dir: {LEFT, RIGHT, UP, DOWN})
         if (dir != -snake->dir && !snake->crash(dir)) {
             QPoint p = snake->next(dir);
             if (inside(p) && !isBrick[p.x()][p.y()])
                 validDirection.push_back(dir);
         }
     if (validDirection.empty())
-        return Snake::LEFT;
+        return LEFT;
     int k = rand() % validDirection.length();
     return validDirection[k];
 }
@@ -142,7 +143,7 @@ bool GameSingle::hasPathToTail(const QList<QPoint> & body) {
 QPoint GameSingle::directionToTail() {
     int m = 0;
     QPoint ret;
-    for (QPoint dir: {Snake::LEFT, Snake::RIGHT, Snake::UP, Snake::DOWN})
+    for (QPoint dir: {LEFT, RIGHT, UP, DOWN})
         if (dir != -snake->dir) {
             QPoint p = snake->next(dir);
             if (inside(p) && !isBrick[p.x()][p.y()]) {
@@ -184,7 +185,7 @@ QList<QPoint> GameSingle::bfs(QPoint u, QPoint v, const QVector<QVector<bool>> &
     prev[u.x()][u.y()] = u;
     q.enqueue(u);
     while (!vis[v.x()][v.y()] && !q.empty()) {
-        for (QPoint dir: {Snake::LEFT, Snake::RIGHT, Snake::UP, Snake::DOWN}) {
+        for (QPoint dir: {LEFT, RIGHT, UP, DOWN}) {
             QPoint p = q.front() + dir;
             if (conf.through == Configuration::ENABLE) {
                 p.setX((p.x() + M) % M);
@@ -227,10 +228,10 @@ void GameSingle::loadMap() {
     QPoint head(headX, headY);
     QPoint dir;
     switch (wasd) {
-    case 'w': dir = Snake::UP; break;
-    case 'a': dir = Snake::LEFT; break;
-    case 's': dir = Snake::DOWN; break;
-    case 'd': dir = Snake::RIGHT; break;
+    case 'w': dir = UP; break;
+    case 'a': dir = LEFT; break;
+    case 's': dir = DOWN; break;
+    case 'd': dir = RIGHT; break;
     }
     snake = new Snake(this, len, head, dir, M, N);
     for (int i = 0; i < M; ++i)

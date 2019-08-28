@@ -1,5 +1,6 @@
 HEADERS += \
     configuration.h \
+    direction.h \
     game.h \
     game_double.h \
     game_over_window.h \
@@ -16,6 +17,7 @@ HEADERS += \
 
 SOURCES += \
     configuration.cpp \
+    direction.cpp \
     game.cpp \
     game_double.cpp \
     game_over_window.cpp \

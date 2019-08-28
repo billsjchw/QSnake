@@ -1,11 +1,6 @@
 #include "snake.h"
 #include "configuration.h"
 
-const QPoint Snake::LEFT(-1, 0);
-const QPoint Snake::RIGHT(1, 0);
-const QPoint Snake::UP(0, -1);
-const QPoint Snake::DOWN(0, 1);
-
 Snake::Snake(QObject * parent, int len, QPoint head, QPoint dir, int m, int n):
     dir(dir), interval(MAX_INTERVAL), score(0), speedUp(false), m(m), n(n) {
     setParent(parent);

@@ -7,6 +7,9 @@
 #include <QMessageBox>
 #include "game_over_window_single.h"
 #include "configuration.h"
+#include "direction.h"
+
+const QColor GameWindowSingle::COLOR_BROWN(76, 74, 12);
 
 GameWindowSingle::GameWindowSingle() {
     ui = new Ui::GameWindowSingle;
@@ -38,8 +41,7 @@ void GameWindowSingle::paintEvent(QPaintEvent *) {
             if (gameSingle->isBlock[i][j])
                 painter.drawPixmap(i, j, 1, 1, IMG_BLOCK);
         }
-    for (QPoint p: gameSingle->snake->body)
-        painter.drawPixmap(p.x(), p.y(), 1, 1, IMG_SNAKE);
+    drawSnake(painter, gameSingle->snake, COLOR_BROWN);
     painter.drawPixmap(gameSingle->apple.x(), gameSingle->apple.y(), 1, 1, IMG_APPLE);
     if (gameSingle->starOn)
         painter.drawPixmap(gameSingle->star.x(), gameSingle->star.y(), 1, 1, IMG_STAR);
@@ -47,10 +49,10 @@ void GameWindowSingle::paintEvent(QPaintEvent *) {
 
 void GameWindowSingle::keyPressEvent(QKeyEvent * event) {
     switch (event->key()) {
-    case Qt::Key_Up: case Qt::Key_W: gameSingle->turnSnake(Snake::UP); break;
-    case Qt::Key_Down: case Qt::Key_S: gameSingle->turnSnake(Snake::DOWN); break;
-    case Qt::Key_Left: case Qt::Key_A: gameSingle->turnSnake(Snake::LEFT); break;
-    case Qt::Key_Right: case Qt::Key_D: gameSingle->turnSnake(Snake::RIGHT); break;
+    case Qt::Key_Up: case Qt::Key_W: gameSingle->turnSnake(UP); break;
+    case Qt::Key_Down: case Qt::Key_S: gameSingle->turnSnake(DOWN); break;
+    case Qt::Key_Left: case Qt::Key_A: gameSingle->turnSnake(LEFT); break;
+    case Qt::Key_Right: case Qt::Key_D: gameSingle->turnSnake(RIGHT); break;
     case Qt::Key_P: pause(); break;
     }
 }
