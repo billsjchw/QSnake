@@ -114,6 +114,20 @@ void Snake::updateScore(int inc) {
     score += inc;
 }
 
+QPoint Snake::tailDirection() const {
+    int len = body.length();
+    QPoint ret = body[len - 1] - body[len - 2];
+    if (ret.x() == m - 1)
+        ret.setX(-1);
+    else if (ret.x() == 1 - m)
+        ret.setX(1);
+    else if (ret.y() == n - 1)
+        ret.setY(-1);
+    else if (ret.y() == 1 - n)
+        ret.setY(1);
+    return ret;
+}
+
 void Snake::updateInterval() {
     if (interval > MIN_INTERVAL)
         interval -= INTERVAL_OFFSET;

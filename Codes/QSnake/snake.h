@@ -44,6 +44,7 @@ public:
     void pauseSpeedUp();
     void resumeSpeedUp();
     void updateScore(int inc);
+    QPoint tailDirection() const;
 private:
     QPoint go(QPoint u, QPoint dir);
 private slots:

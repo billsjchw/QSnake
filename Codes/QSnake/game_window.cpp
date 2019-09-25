@@ -31,7 +31,7 @@ void GameWindow::drawSnake(QPainter & painter, const Snake * snake, QColor color
     imgHeadTailDown.setMask(IMG_HEAD_TAIL_DOWN);
     int len = snake->body.length();
     QPoint head = snake->body[0];
-    QPoint headDir = snake->body[0] - snake->body[1];
+    QPoint headDir = snake->dir;
     if (headDir == LEFT)
         painter.drawPixmap(head.x(), head.y(), 1, 1, imgHeadTailLeft);
     else if (headDir == RIGHT)
@@ -45,7 +45,7 @@ void GameWindow::drawSnake(QPainter & painter, const Snake * snake, QColor color
         painter.drawPixmap(p.x(), p.y(), 1, 1, imgBody);
     }
     QPoint tail = snake->body[len - 1];
-    QPoint tailDir = snake->body[len - 1] - snake->body[len - 2];
+    QPoint tailDir = snake->tailDirection();
     if (tailDir == LEFT)
         painter.drawPixmap(tail.x(), tail.y(), 1, 1, imgHeadTailLeft);
     else if (tailDir == RIGHT)
